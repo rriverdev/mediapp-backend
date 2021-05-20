@@ -22,78 +22,78 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.rriverdev.exception.ModeloNotFoundException;
-import com.rriverdev.model.Paciente;
-import com.rriverdev.service.IPacienteSrvice;
+import com.rriverdev.model.Medico;
+import com.rriverdev.service.IMedicoService;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping("/pacientes")//("/pacientes")
-public class PacienteController {
+@RequestMapping("/medicos")//("/Medicos")
+public class MedicoController {
 
 	@Autowired
-	private IPacienteSrvice service;
+	private IMedicoService service;
 	
 	@GetMapping
-	public ResponseEntity<List<Paciente>> listar() throws Exception{
-		List<Paciente> lista = service.listar();
-		return new ResponseEntity<List<Paciente>>(lista, HttpStatus.OK);
+	public ResponseEntity<List<Medico>> listar() throws Exception{
+		List<Medico> lista = service.listar();
+		return new ResponseEntity<List<Medico>>(lista, HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Paciente> listarPorId(@PathVariable("id") Integer id) throws Exception{
-		Paciente obj = service.listarPorId(id);
-		if (obj.getIdPaciente() == null) {
+	public ResponseEntity<Medico> listarPorId(@PathVariable("id") Integer id) throws Exception{
+		Medico obj = service.listarPorId(id);
+		if (obj.getIdMedico() == null) {
 			throw new ModeloNotFoundException("ID NO ENCONTRADO" + id);
 		}
 		
-		return  new ResponseEntity<Paciente>(obj, HttpStatus.OK);
+		return  new ResponseEntity<Medico>(obj, HttpStatus.OK);
 	}
 
 	@GetMapping("/hateoas/{id}")
-	public EntityModel<Paciente> listarPorIdHateoas(@PathVariable("id") Integer id) throws Exception{
-		Paciente obj = service.listarPorId(id);
+	public EntityModel<Medico> listarPorIdHateoas(@PathVariable("id") Integer id) throws Exception{
+		Medico obj = service.listarPorId(id);
 		
-		if(obj.getIdPaciente() == null) {
+		if(obj.getIdMedico() == null) {
 			throw new ModeloNotFoundException("ID NO ENCONTRADO: " + id);
 		}
-		//localhost:8080/pacientes/{id}
-		EntityModel<Paciente> recurso = EntityModel.of(obj);
+		//localhost:8080/Medicos/{id}
+		EntityModel<Medico> recurso = EntityModel.of(obj);
 		
 		WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).listarPorId(id));
-		recurso.add(link.withRel("paciente-recurso"));
+		recurso.add(link.withRel("Medico-recurso"));
 		
 		WebMvcLinkBuilder linkz = linkTo(methodOn(this.getClass()).listarPorIdHateoas(id));//+"chupateUnLemooooOn");
 		recurso.add(linkz.withRel("second?"));
 		return recurso;
 	}
 								/*@PostMapping
-								public ResponseEntity<Paciente> registrar(@Valid @RequestBody Paciente p) throws Exception{
-									Paciente obj = service.registrar(p);
-									return new ResponseEntity<Paciente>(obj, HttpStatus.CREATED);
+								public ResponseEntity<Medico> registrar(@Valid @RequestBody Medico p) throws Exception{
+									Medico obj = service.registrar(p);
+									return new ResponseEntity<Medico>(obj, HttpStatus.CREATED);
 								}*/
 	
 	
 	
 	
 	@PostMapping
-	public ResponseEntity<Paciente> registrar(@Valid @RequestBody Paciente p) throws Exception{
-		Paciente obj = service.registrar(p);
+	public ResponseEntity<Medico> registrar(@Valid @RequestBody Medico p) throws Exception{
+		Medico obj = service.registrar(p);
 		//localhost:8080/pcientes/{2}
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getIdPaciente()).toUri();
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getIdMedico()).toUri();
 		return ResponseEntity.created(location).build();
 	}
 	@PutMapping
-	public ResponseEntity<Paciente> modificar(@Valid @RequestBody Paciente p) throws Exception{
-		Paciente obj = service.modificar(p);
-		return new ResponseEntity<Paciente>(obj, HttpStatus.OK); 
+	public ResponseEntity<Medico> modificar(@Valid @RequestBody Medico p) throws Exception{
+		Medico obj = service.modificar(p);
+		return new ResponseEntity<Medico>(obj, HttpStatus.OK); 
 	}
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> eliminar(@PathVariable("id")  Integer id) throws Exception{
-		Paciente obj = service.listarPorId(id);
-		if (obj.getIdPaciente() == null) {
+		Medico obj = service.listarPorId(id);
+		if (obj.getIdMedico() == null) {
 			throw new ModeloNotFoundException("ID NO ENCONTRADO" + id);
 		}
 		service.eliminar(id);
