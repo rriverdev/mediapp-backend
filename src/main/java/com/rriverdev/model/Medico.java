@@ -33,7 +33,7 @@ public class Medico {
 	private String CMP;
 	
 	@Column(name ="foto_Url", nullable = false)
-	private byte [] fotoUrl;
+	private String fotoUrl;
 
 	public Integer getIdMedico() {
 		return idMedico;
@@ -67,11 +67,11 @@ public class Medico {
 		CMP = cMP;
 	}
 
-	public byte[] getFotoUrl() {
+	public String getFotoUrl() {
 		return fotoUrl;
 	}
 
-	public void setFotoUrl(byte[] fotoUrl) {
+	public void setFotoUrl(String fotoUrl) {
 		this.fotoUrl = fotoUrl;
 	}
 
